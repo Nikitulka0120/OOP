@@ -37,10 +37,16 @@ public:
         cout << "Стоимость билет: " << Price << endl;
         cout << "Число месь: " << Seats << endl;
         cout << "Количество проданных: " << SoldCount << " человек" << endl;
+        cout << "Выручка: "<< Income() << " Рублей" << endl;
+        cout << "Средняя выручка: "<< AvIncome() << " Рублей" << endl;
         cout << "---------------------------------------------" << endl;
     }
-    int Income(){
+    int Income() const{
         return Price*SoldCount;
+    }
+    int AvIncome() const{
+        if (Seats==0) return 0;
+        return Income()/Seats;
     }
 
     int get_BoardNumber() const
@@ -99,7 +105,7 @@ int main()
 {
     int n;
     system("chcp 65001 >> nul");
-    cout << "Введите количество кинотеатров: ";
+    cout << "Введите количество аэропортов: ";
     cin >> n;
     ifstream f("aport.txt");
     if (!f.is_open())
@@ -128,7 +134,7 @@ int main()
     }
     f.close();
     print_aeroports(Aeroports);
-    sort(Aeroports.begin(), Aeroports.end(), compareByIncome);
+    Aeroports.sort(compareByIncome);
     ofstream f_out("aport.txt", ios::app);
     char addMore;
     do
@@ -136,17 +142,21 @@ int main()
         cout << "Введите данные нового аэропорта:" << endl;
         int BN, PR, SE, SO;
         cout << "Номер рейса: ";
-        f >> BN;
+        cin >> BN;
         cout << "Цена билета: ";
-        f >> PR;
+        cin >> PR;
         cout << "Количесто место: ";
-        f >> SE;
+        cin >> SE;
         cout << "Количество проданных: ";
-        f >> SO;
+        cin >> SO;
+        f_out<<BN<<endl;
+        f_out<<PR<<endl;
+        f_out<<SE<<endl;
+        f_out<<SO<<endl;
 
         Aeroport newAero(BN, PR, SE, SO);
         Aeroports.push_back(newAero);
-        cout << "Добавить еще один кинотеатр? (y/n): ";
+        cout << "Добавить еще один аэропорт? (y/n): ";
         cin >> addMore;
 
     } while (addMore == 'y' || addMore == 'Y');
